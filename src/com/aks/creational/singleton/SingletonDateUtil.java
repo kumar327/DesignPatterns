@@ -1,6 +1,10 @@
 package com.aks.creational.singleton;
 
-public class SingletonDateUtil {
+import java.io.Serializable;
+
+public class SingletonDateUtil implements Serializable, Cloneable {
+
+	private static final long serialVersionUID = 1L;
 
 	public static SingletonDateUtil singletonDateUtil;
 
@@ -9,21 +13,28 @@ public class SingletonDateUtil {
 	}
 
 	public static SingletonDateUtil getInstance() {
+
 		if (singletonDateUtil == null) {
-			singletonDateUtil = new SingletonDateUtil();
+			synchronized (SingletonDateUtil.class) {// Thread Safe
+				if (singletonDateUtil == null) {
+					singletonDateUtil = new SingletonDateUtil();
+				}
+
+			}
 		}
 
 		return singletonDateUtil;
 	}
 
-	public static void main(String[] args) {
-		SingletonDateUtil s1 = SingletonDateUtil.getInstance();
-		SingletonDateUtil s2 = SingletonDateUtil.getInstance();
-		if (s1 == s2) {
-			System.out.println("Same Object");
-		} else {
-			System.out.println("Different Object");
-		}
+	// Serlization fix
+	public Object readResolve() {
+		return singletonDateUtil;
+	}
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		// TODO Auto-generated method stub
+		throw new CloneNotSupportedException("Clone Not Supported for Single ton class");
 	}
 
 }

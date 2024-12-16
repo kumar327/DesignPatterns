@@ -26,7 +26,7 @@ public class SingletonDateUtil implements Serializable, Cloneable {
 		return singletonDateUtil;
 	}
 
-	// Serlization fix
+	// Serialization fix
 	public Object readResolve() {
 		return singletonDateUtil;
 	}
